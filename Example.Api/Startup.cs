@@ -12,12 +12,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Example.Common.Helpers;
+using Example.Api.Models;
 
 namespace Example.Api
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        private SwaggerInfo swaggerInfo;
 
         public Startup(IConfiguration configuration)
         {
@@ -28,6 +30,7 @@ namespace Example.Api
         {
             services.AddControllers();
 
+            swaggerInfo = Configuration.GetSection(nameof(SwaggerInfo)).Get<SwaggerInfo>();
             var tokenOptions = Configuration.GetSection(nameof(TokenOptions)).Get<TokenOptions>();
             services.AddSingleton(tokenOptions);
 
@@ -59,15 +62,15 @@ namespace Example.Api
                         }
                 };
                 options.AddSecurityRequirement(security);
-                options.SwaggerDoc("v1", new OpenApiInfo
+                options.SwaggerDoc(swaggerInfo.Version, new OpenApiInfo
                 {
-                    Title = "Example Application",
-                    Version = "v1",
-                    Description = "Example .Net Core Swagger & JWT Token aplication",
+                    Title = swaggerInfo.Title,
+                    Version = swaggerInfo.Version,
+                    Description = swaggerInfo.Description,
                     Contact = new OpenApiContact
                     {
-                        Name = "Okan Çelik",
-                        Email = "okan.celik@outlook.com"
+                        Name = swaggerInfo.Contact.Name,
+                        Email = swaggerInfo.Contact.Email
                     }
                 });
                 // Set the comments path for the Swagger JSON and UI.
@@ -93,7 +96,6 @@ namespace Example.Api
                 });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -110,7 +112,7 @@ namespace Example.Api
             app.UseSwaggerUI(options =>
             {
                 options.RoutePrefix = string.Empty; //set start page swagger.
-                options.SwaggerEndpoint("swagger/v1/swagger.json", "v1");
+                options.SwaggerEndpoint($"swagger/{swaggerInfo.Version}/swagger.json", swaggerInfo.Version);
             });
             #endregion
 
