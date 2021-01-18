@@ -39,27 +39,28 @@ namespace Example.Api
             {
                 options.SwaggerGeneratorOptions.IgnoreObsoleteActions = true;
 
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                options.AddSecurityDefinition(swaggerInfo.Authorization.AuthenticationScheme, new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
+                    Description = swaggerInfo.Authorization.Description,
+                    Name = swaggerInfo.Authorization.Name,
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
                 });
 
-                var security = new OpenApiSecurityRequirement {
+                var security = new OpenApiSecurityRequirement 
+                {
+                    {
+                        new OpenApiSecurityScheme
                         {
-                            new OpenApiSecurityScheme
+                            Reference = new OpenApiReference
                             {
-                                Reference = new OpenApiReference
-                                {
-                                    Id = "Bearer",
-                                    Type = ReferenceType.SecurityScheme
-                                },
-                                UnresolvedReference = true
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
                             },
+                            UnresolvedReference = true
+                        },
                         new List<string>()
-                        }
+                    }
                 };
                 options.AddSecurityRequirement(security);
                 options.SwaggerDoc(swaggerInfo.Version, new OpenApiInfo
@@ -73,35 +74,31 @@ namespace Example.Api
                         Email = swaggerInfo.Contact.Email
                     }
                 });
-                // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
             });
             #endregion
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidIssuer = tokenOptions.Issuer,
-                        ValidAudience = tokenOptions.Audience,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = tokenOptions.Key.CreateSecurityKey()
-                    };
-                });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = tokenOptions.Issuer,
+                    ValidAudience = tokenOptions.Audience,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = tokenOptions.Key.CreateSecurityKey()
+                };
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
 
             app.UseRouting();
             app.UseAuthentication();
