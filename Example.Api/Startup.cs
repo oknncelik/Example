@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using Example.Api.Models;
+using Example.Common.Helpers;
 using Example.Common.Security.Jwt.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -7,47 +13,43 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using Example.Common.Helpers;
-using Example.Api.Models;
 
 namespace Example.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        private SwaggerInfo swaggerInfo;
+        private SwaggerInfo _swaggerInfo;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
-            swaggerInfo = Configuration.GetSection(nameof(SwaggerInfo)).Get<SwaggerInfo>();
+            _swaggerInfo = Configuration.GetSection(nameof(SwaggerInfo)).Get<SwaggerInfo>();
             var tokenOptions = Configuration.GetSection(nameof(TokenOptions)).Get<TokenOptions>();
             services.AddSingleton(tokenOptions);
 
             #region Swagger Settings
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerGeneratorOptions.IgnoreObsoleteActions = true;
 
-                options.AddSecurityDefinition(swaggerInfo.Authorization.AuthenticationScheme, new OpenApiSecurityScheme
+                options.AddSecurityDefinition(_swaggerInfo.Authorization.AuthenticationScheme, new OpenApiSecurityScheme
                 {
-                    Description = swaggerInfo.Authorization.Description,
-                    Name = swaggerInfo.Authorization.Name,
+                    Description = _swaggerInfo.Authorization.Description,
+                    Name = _swaggerInfo.Authorization.Name,
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
                 });
 
-                var security = new OpenApiSecurityRequirement 
+                var security = new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -63,21 +65,22 @@ namespace Example.Api
                     }
                 };
                 options.AddSecurityRequirement(security);
-                options.SwaggerDoc(swaggerInfo.Version, new OpenApiInfo
+                options.SwaggerDoc(_swaggerInfo.Version, new OpenApiInfo
                 {
-                    Title = swaggerInfo.Title,
-                    Version = swaggerInfo.Version,
-                    Description = swaggerInfo.Description,
+                    Title = _swaggerInfo.Title,
+                    Version = _swaggerInfo.Version,
+                    Description = _swaggerInfo.Description,
                     Contact = new OpenApiContact
                     {
-                        Name = swaggerInfo.Contact.Name,
-                        Email = swaggerInfo.Contact.Email
+                        Name = _swaggerInfo.Contact.Name,
+                        Email = _swaggerInfo.Contact.Email
                     }
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
             });
+
             #endregion
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -105,18 +108,17 @@ namespace Example.Api
             app.UseAuthorization();
 
             #region Swagger
+
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.RoutePrefix = string.Empty; //set start page swagger.
-                options.SwaggerEndpoint($"swagger/{swaggerInfo.Version}/swagger.json", swaggerInfo.Version);
+                options.SwaggerEndpoint($"swagger/{_swaggerInfo.Version}/swagger.json", _swaggerInfo.Version);
             });
+
             #endregion
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Example.Business.Abstract;
+﻿using System.Threading.Tasks;
+using Example.Business.Abstract;
+using Example.Common.Attributes;
 using Example.Common.Constants;
 using Example.Common.Helpers;
 using Example.Common.Results;
@@ -8,15 +10,14 @@ using Example.Common.Security.Jwt.Models;
 using Example.Dal.Abstract.Repositories;
 using Example.Entities.Dtos;
 using Example.Entities.Entities;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Example.Business.Concreate
 {
     public class AuthManager : IAuthManager
     {
-        private readonly IUserRepository _userRepository;
         private readonly ITokenHelper _tokenHelper;
+        private readonly IUserRepository _userRepository;
+
         public AuthManager(IUserRepository userRepository,
             ITokenHelper tokenHelper)
         {
@@ -26,7 +27,7 @@ namespace Example.Business.Concreate
 
         public async Task<IResult<UserInfoModel>> Register(RegisterModel register)
         {
-            HashHelpers.CreatePasswordHash(register.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            HashHelpers.CreatePasswordHash(register.Password, out var passwordHash, out var passwordSalt);
             var user = new User
             {
                 UserName = register.UserName,
@@ -49,6 +50,7 @@ namespace Example.Business.Concreate
             return new SuccessResult<UserInfoModel>(result, Messages.UserRegistered);
         }
 
+        [Log]
         public async Task<IResult<UserInfoModel>> Login(LoginModel login)
         {
             var user = await _userRepository.Get(x => x.UserName == login.UserName || x.EMail == login.UserName);
@@ -78,8 +80,8 @@ namespace Example.Business.Concreate
                 var accessToken = _tokenHelper.CreateToken(user, claims);
                 return new SuccessResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
             }
-            else
-                return new ErrorResult<AccessToken>(Messages.AccessTokenNotCreated);
+
+            return new ErrorResult<AccessToken>(Messages.AccessTokenNotCreated);
         }
     }
 }

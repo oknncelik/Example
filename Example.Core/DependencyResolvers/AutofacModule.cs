@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Castle.DynamicProxy;
 using Example.Business.Abstract;
 using Example.Business.Concreate;
+using Example.Common.Intercepters;
 using Example.Common.Security.Jwt;
 using Example.Common.Security.Jwt.Abstract;
 using Example.Dal.Abstract.Repositories;
@@ -12,18 +15,34 @@ namespace Example.Core.DependencyResolvers
     {
         protected override void Load(ContainerBuilder builder)
         {
-            
-            builder.RegisterType<TokenHelper>().As<ITokenHelper>();
+            builder.RegisterType<TokenHelper>().As<ITokenHelper>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
 
             #region Repositories
-            builder.RegisterType<UserRepository>().As<IUserRepository>();
-            builder.RegisterType<OperationClaimRepository>().As<IOperationClaimRepository>();
-            builder.RegisterType<UserOperationClaimRepository>().As<IUserOperationClaimRepository>();
+
+            builder.RegisterType<UserRepository>().As<IUserRepository>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<OperationClaimRepository>().As<IOperationClaimRepository>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<UserOperationClaimRepository>().As<IUserOperationClaimRepository>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+
             #endregion
 
             #region Managers
-            builder.RegisterType<AuthManager>().As<IAuthManager>();
-            #endregion        
+
+            builder.RegisterType<AuthManager>().As<IAuthManager>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+
+            #endregion
+
+            /*
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces().EnableInterfaceInterceptors(new ProxyGenerationOptions()
+            {
+                Selector = new AspectInterceptorSelector()
+            }).SingleInstance();    
+            */
         }
     }
 }
