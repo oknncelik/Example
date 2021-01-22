@@ -51,6 +51,7 @@ namespace Example.Business.Concreate
         }
 
         [Log]
+        [Cache]
         public async Task<IResult<UserInfoModel>> Login(LoginModel login)
         {
             var user = await _userRepository.Get(x => x.UserName == login.UserName || x.EMail == login.UserName);

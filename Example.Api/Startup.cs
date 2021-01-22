@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Example.Api.Models;
+using Example.Common.DependencyResolvers;
+using Example.Common.Extensions;
 using Example.Common.Helpers;
+using Example.Common.Ioc.Abstract;
 using Example.Common.Security.Jwt.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -95,6 +98,11 @@ namespace Example.Api
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = tokenOptions.Key.CreateSecurityKey()
                 };
+            });
+
+            services.AddDependencyResolvers(new ICoreModule[]
+            {
+                 new CoreModule()
             });
         }
 
