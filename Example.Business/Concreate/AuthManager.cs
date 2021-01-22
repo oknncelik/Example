@@ -2,6 +2,7 @@
 using Example.Business.Abstract;
 using Example.Common.Attributes;
 using Example.Common.Constants;
+using Example.Common.Enums;
 using Example.Common.Helpers;
 using Example.Common.Results;
 using Example.Common.Results.Abstract;
@@ -24,7 +25,7 @@ namespace Example.Business.Concreate
             _userRepository = userRepository;
             _tokenHelper = tokenHelper;
         }
-
+        
         public async Task<IResult<UserInfoModel>> Register(RegisterModel register)
         {
             HashHelpers.CreatePasswordHash(register.Password, out var passwordHash, out var passwordSalt);
@@ -51,7 +52,7 @@ namespace Example.Business.Concreate
         }
 
         [Log]
-        [Cache]
+        [Cache(Cache.Remove)]
         public async Task<IResult<UserInfoModel>> Login(LoginModel login)
         {
             var user = await _userRepository.Get(x => x.UserName == login.UserName || x.EMail == login.UserName);
