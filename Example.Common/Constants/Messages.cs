@@ -2,7 +2,7 @@
 {
     public static class Messages
     {
-        public static string AuthorizationDenied = "İşlemi yapmaya yetkiniz bulunmamakta.";
+        public static string AuthorizationDenied = "Bu işlemi yapmaya yetkiniz yoktur !";
         public static string UserRegistered = "Kullanıcı başarıyla kaydedildi";
         public static string UserNotFound = "Kullanıcı bulunamadı";
         public static string PasswordError = "Şifre hatalı";

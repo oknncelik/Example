@@ -30,14 +30,11 @@ namespace Example.Common.Attributes
         public override void Intercept(IInvocation invocation)
         {
             var claims = _accessor.HttpContext.User.ClaimRole();
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var claim in claims)
-                if (_roles.Contains(claim))
-                {
-                    invocation.Proceed();
-                    return;
-                }
-
+            if (claims.Any(claim => _roles.Contains(claim)))
+            {
+                invocation.Proceed();
+                return;
+            }
             invocation.ReturnValue = AuthorizationDeniedResult();
         }
 
