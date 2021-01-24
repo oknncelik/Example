@@ -3,11 +3,12 @@ using Example.Common.Results.Abstract;
 
 namespace Example.Common.Results
 {
-    public class SuccessResult<TModel> : IResult<TModel>
+    public class SuccessResult<TModel> : IResultModel<TModel>
     {
+        public string ResultType { get; } = "Success";
         public int Code { get; set; } = 0;
-        public bool IsSuccess { get; set; } = true;
-        public string Message { get; set; } = "Ok";
+        public bool IsSuccess { get; } = true;
+        public string Message { get; set; } = "Success";
         public TModel Result { get; set; }
 
         public SuccessResult(TModel result, string message = "") : this(message)
@@ -17,8 +18,12 @@ namespace Example.Common.Results
 
         public SuccessResult(string message)
         {
-            if (message.IsNotEmpity())
+            if (message.IsNotEmpty())
                 Message = message;
+        }
+        
+        public SuccessResult()
+        {
         }
     }
 }

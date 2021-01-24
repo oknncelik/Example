@@ -14,6 +14,7 @@ using Example.Entities.Entities;
 
 namespace Example.Business.Concreate
 {
+    [Log]
     public class AuthManager : IAuthManager
     {
         private readonly ITokenHelper _tokenHelper;
@@ -26,7 +27,7 @@ namespace Example.Business.Concreate
             _tokenHelper = tokenHelper;
         }
         
-        public async Task<IResult<UserInfoModel>> Register(RegisterModel register)
+        public async Task<IResult> Register(RegisterModel register)
         {
             HashHelpers.CreatePasswordHash(register.Password, out var passwordHash, out var passwordSalt);
             var user = new User
@@ -51,16 +52,15 @@ namespace Example.Business.Concreate
             return new SuccessResult<UserInfoModel>(result, Messages.UserRegistered);
         }
 
-        [Log]
-        [Cache(Cache.Remove)]
-        public async Task<IResult<UserInfoModel>> Login(LoginModel login)
+        
+        public async Task<IResult> Login(LoginModel login)
         {
             var user = await _userRepository.Get(x => x.UserName == login.UserName || x.EMail == login.UserName);
             if (user == null)
-                return new ErrorResult<UserInfoModel>(Messages.UserNotFound);
+                return new ErrorResult(Messages.UserNotFound);
 
             if (!HashHelpers.VerifyPasswordHash(login.Password, user.PasswordHash, user.PasswordSalt))
-                return new ErrorResult<UserInfoModel>(Messages.PasswordError);
+                return new ErrorResult(Messages.PasswordError);
 
             var result = new UserInfoModel
             {
@@ -73,17 +73,21 @@ namespace Example.Business.Concreate
             return new SuccessResult<UserInfoModel>(result, Messages.SuccessfulLogin);
         }
 
-        public async Task<IResult<AccessToken>> CreateAccessToken(UserInfoModel userModel)
+        public async Task<IResult> CreateAccessToken(IResult userModel)
         {
-            var user = await _userRepository.Get(x => x.Id == userModel.Id);
-            if (user != null)
+            if (userModel.GetType() == typeof(SuccessResult<UserInfoModel>))
             {
+                var model = (userModel as SuccessResult<UserInfoModel>);
+                var user = await _userRepository.Get(x => x.Id == model.Result.Id);
+                if (user == null) return new ErrorResult(Messages.AccessTokenNotCreated);
                 var claims = await _userRepository.GetClaims(user);
                 var accessToken = _tokenHelper.CreateToken(user, claims);
-                return new SuccessResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+                return new SuccessResult<AccessToken>(accessToken, Messages.AccessTokenCreated);               
             }
-
-            return new ErrorResult<AccessToken>(Messages.AccessTokenNotCreated);
+            else
+            {
+                return new ErrorResult(Messages.AccessTokenNotCreated);
+            }
         }
     }
 }

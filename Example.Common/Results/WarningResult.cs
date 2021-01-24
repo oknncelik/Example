@@ -1,24 +1,21 @@
-﻿#region
-
+﻿using System.Xml.XPath;
 using Example.Common.Results.Abstract;
-
-#endregion
 
 namespace Example.Common.Results
 {
-    public class ErrorResult : IResult
+    public class WarningResult : IResult
     {
-        public string ResultType { get; } = "Error";
+        public string ResultType { get; } = "Warning";
         public int Code { get; set; }
         public bool IsSuccess { get; } = false;
         public string Message { get; set; }
         
-        public ErrorResult(int code, string message) : this(message)
+        public WarningResult(int code, string message) : this(message)
         {
             Code = code;
         }
-
-        public ErrorResult(string message)
+        
+        public WarningResult(string message)
         {
             Message = message;
         }

@@ -26,12 +26,20 @@ namespace Example.Core.DependencyResolvers
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
             builder.RegisterType<UserOperationClaimRepository>().As<IUserOperationClaimRepository>()
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<CategoryRepository>().As<ICategoryRepository>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<ProductRepository>().As<IProductRepository>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
 
             #endregion
 
             #region Managers
 
             builder.RegisterType<AuthManager>().As<IAuthManager>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<CategoryManager>().As<ICategoryManager>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<ProductManager>().As<IProductManager>()
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
 
             #endregion

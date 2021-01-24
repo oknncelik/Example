@@ -2,7 +2,7 @@
 {
     public static class StringHelpers
     {
-        public static bool IsNotEmpity(this string value)
+        public static bool IsNotEmpty(this string value)
         {
             try
             {

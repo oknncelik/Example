@@ -24,11 +24,11 @@ namespace Example.Api.Controllers
             if (!user.IsSuccess)
                 return BadRequest(user.Message);
 
-            var result = await _authManager.CreateAccessToken(user.Result);
+            var result = await _authManager.CreateAccessToken(user);
             if (result.IsSuccess)
-                return Ok(result.Result);
+                return Ok(result);
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("register")]

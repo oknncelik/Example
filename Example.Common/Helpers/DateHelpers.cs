@@ -81,12 +81,12 @@ namespace Example.Common.Helpers
         {
             try
             {
-                if (date.DayOfWeek == DayOfWeek.Saturday)
-                    return date.AddDays(-1);
-                else if (date.DayOfWeek == DayOfWeek.Sunday)
-                    return date.AddDays(-2);
-                else
-                    return date;
+                return date.DayOfWeek switch
+                {
+                    DayOfWeek.Saturday => date.AddDays(-1),
+                    DayOfWeek.Sunday => date.AddDays(-2),
+                    _ => date
+                };
             }
             catch
             {
@@ -103,12 +103,12 @@ namespace Example.Common.Helpers
         {
             try
             {
-                if (date.DayOfWeek == DayOfWeek.Saturday)
-                    return date.AddDays(2);
-                else if (date.DayOfWeek == DayOfWeek.Sunday)
-                    return date.AddDays(1);
-                else
-                    return date;
+                return date.DayOfWeek switch
+                {
+                    DayOfWeek.Saturday => date.AddDays(2),
+                    DayOfWeek.Sunday => date.AddDays(1),
+                    _ => date
+                };
             }
             catch
             {
