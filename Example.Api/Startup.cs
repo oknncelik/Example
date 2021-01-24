@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
+#endregion
 
 namespace Example.Api
 {
@@ -102,7 +106,7 @@ namespace Example.Api
 
             services.AddDependencyResolvers(new ICoreModule[]
             {
-                 new CoreModule()
+                new CoreModule()
             });
         }
 

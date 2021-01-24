@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Example.Common.Cachings.Abstract
+﻿namespace Example.Common.Cachings.Abstract
 {
     public interface ICacheManager
     {

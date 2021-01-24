@@ -1,4 +1,8 @@
-﻿using Castle.DynamicProxy;
+﻿#region
+
+using Castle.DynamicProxy;
+
+#endregion
 
 namespace Example.Common.Intercepters
 {

@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿#region
+
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+
+#endregion
 
 namespace Example.Common.Helpers
 {

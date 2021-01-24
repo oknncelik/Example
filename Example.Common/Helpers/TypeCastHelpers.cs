@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Example.Common.Helpers
 {
@@ -10,7 +14,7 @@ namespace Example.Common.Helpers
             {
                 return value.ToString();
             }
-            catch 
+            catch
             {
                 return string.Empty;
             }

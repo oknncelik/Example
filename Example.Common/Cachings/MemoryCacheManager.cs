@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +8,8 @@ using Example.Common.Cachings.Abstract;
 using Example.Common.Ioc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+
+#endregion
 
 namespace Example.Common.Cachings
 {
@@ -32,7 +36,7 @@ namespace Example.Common.Cachings
         {
             Cache.Set(key, data, TimeSpan.FromMinutes(duration));
         }
-        
+
         public bool IsAdded(string key)
         {
             return Cache.TryGetValue(key, out _);
@@ -42,7 +46,7 @@ namespace Example.Common.Cachings
         {
             Cache.Remove(key);
         }
-        
+
         public void RemoveByPattern(string pattern)
         {
             var definition = typeof(MemoryCache).GetProperty("EntriesCollection",

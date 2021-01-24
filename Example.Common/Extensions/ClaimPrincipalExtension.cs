@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+
+#endregion
 
 namespace Example.Common.Extensions
 {

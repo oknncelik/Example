@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Example.Business.Abstract;
@@ -10,8 +12,11 @@ using Example.Dal.Abstract.Repositories;
 using Example.Entities.Dtos;
 using Example.Entities.Entities;
 
+#endregion
+
 namespace Example.Business.Concreate
 {
+    [Log]
     public class CategoryManager : ICategoryManager
     {
         private readonly ICategoryRepository _categoryRepository;

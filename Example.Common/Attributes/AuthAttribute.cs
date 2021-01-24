@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
@@ -29,12 +30,15 @@ namespace Example.Common.Attributes
 
         public override void Intercept(IInvocation invocation)
         {
+            var start = DateTime.Now;
             var claims = _accessor.HttpContext.User.ClaimRole();
             if (claims.Any(claim => _roles.Contains(claim)))
             {
                 invocation.Proceed();
                 return;
             }
+
+            var end = DateTime.Now;
             invocation.ReturnValue = AuthorizationDeniedResult();
         }
 

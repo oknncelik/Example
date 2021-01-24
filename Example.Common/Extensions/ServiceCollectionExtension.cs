@@ -1,6 +1,10 @@
-﻿using Example.Common.Ioc;
+﻿#region
+
+using Example.Common.Ioc;
 using Example.Common.Ioc.Abstract;
 using Microsoft.Extensions.DependencyInjection;
+
+#endregion
 
 namespace Example.Common.Extensions
 {

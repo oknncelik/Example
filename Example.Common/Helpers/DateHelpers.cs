@@ -1,11 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Example.Common.Helpers
 {
     public static class DateHelpers
     {
         /// <summary>
-        /// Tarihi günün ilk saatine ayarlar.
+        ///     Tarihi günün ilk saatine ayarlar.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -22,7 +26,7 @@ namespace Example.Common.Helpers
         }
 
         /// <summary>
-        /// Tarihi günün son saatine ayarlar.
+        ///     Tarihi günün son saatine ayarlar.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -39,7 +43,7 @@ namespace Example.Common.Helpers
         }
 
         /// <summary>
-        /// Tarihi bulunduğu ayın ilk gününe ayarlar.
+        ///     Tarihi bulunduğu ayın ilk gününe ayarlar.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -47,7 +51,7 @@ namespace Example.Common.Helpers
         {
             try
             {
-                return new DateTime(date.Year, date.Month , 1);
+                return new DateTime(date.Year, date.Month, 1);
             }
             catch
             {
@@ -56,7 +60,7 @@ namespace Example.Common.Helpers
         }
 
         /// <summary>
-        /// Tarihi bulunduğu ayın son gününe ayarlar.
+        ///     Tarihi bulunduğu ayın son gününe ayarlar.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -73,7 +77,7 @@ namespace Example.Common.Helpers
         }
 
         /// <summary>
-        /// Tarih hafta sonuna geliyorsa önceki cuma gününe ayarlar.
+        ///     Tarih hafta sonuna geliyorsa önceki cuma gününe ayarlar.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -95,7 +99,7 @@ namespace Example.Common.Helpers
         }
 
         /// <summary>
-        /// Tarih hafta sonuna geliyorsa sonraki pazartesi gününe ayarlar.
+        ///     Tarih hafta sonuna geliyorsa sonraki pazartesi gününe ayarlar.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>

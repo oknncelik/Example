@@ -1,10 +1,14 @@
-﻿using Example.Dal.Abstract.Repositories;
-using Example.Dal.Context;
-using Example.Entities.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿#region
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Example.Dal.Abstract.Repositories;
+using Example.Dal.Context;
+using Example.Entities.Entities;
+using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Example.Dal.Concreate.Repositories
 {

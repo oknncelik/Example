@@ -1,4 +1,8 @@
-﻿using Example.Entities.Entities;
+﻿#region
+
+using Example.Entities.Entities;
+
+#endregion
 
 namespace Example.Dal.Abstract.Repositories
 {

@@ -1,11 +1,15 @@
-﻿using Example.Dal.Abstract;
-using Example.Entities.Abstract;
-using Microsoft.EntityFrameworkCore;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Example.Dal.Abstract;
+using Example.Entities.Abstract;
+using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Example.Dal.Concreate
 {
@@ -35,8 +39,7 @@ namespace Example.Dal.Concreate
             await using var context = new TContext();
             if (filter != null)
                 return await context.Set<TEntity>().Where(filter).FirstOrDefaultAsync();
-            else
-                return await context.Set<TEntity>().FirstOrDefaultAsync();
+            return await context.Set<TEntity>().FirstOrDefaultAsync();
         }
 
         public async Task<IList<TEntity>> GetList(Expression<Func<TEntity, bool>> filter = null)
@@ -44,8 +47,7 @@ namespace Example.Dal.Concreate
             await using var context = new TContext();
             if (filter != null)
                 return await context.Set<TEntity>().Where(filter).ToListAsync();
-            else
-                return await context.Set<TEntity>().ToListAsync();
+            return await context.Set<TEntity>().ToListAsync();
         }
 
         public async Task<TEntity> Update(TEntity entity)

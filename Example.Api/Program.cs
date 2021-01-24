@@ -1,8 +1,12 @@
+#region
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Example.Core.DependencyResolvers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+
+#endregion
 
 namespace Example.Api
 {
@@ -13,16 +17,12 @@ namespace Example.Api
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureContainer<ContainerBuilder>(builder =>
-                {
-                    builder.RegisterModule(new AutofacModule());
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureContainer<ContainerBuilder>(builder => { builder.RegisterModule(new AutofacModule()); })
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
     }
 }

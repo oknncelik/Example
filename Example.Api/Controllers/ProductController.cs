@@ -1,8 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿#region
+
+using System.Threading.Tasks;
 using Example.Business.Abstract;
 using Example.Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Example.Api.Controllers
 {
@@ -19,7 +23,7 @@ namespace Example.Api.Controllers
         }
 
         /// <summary>
-        /// List of product
+        ///     List of product
         /// </summary>
         /// <returns></returns>
         [HttpGet("products")]
@@ -27,9 +31,9 @@ namespace Example.Api.Controllers
         {
             return Ok(await _productManager.GetProducts());
         }
-        
+
         /// <summary>
-        /// Add product
+        ///     Add product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -38,9 +42,9 @@ namespace Example.Api.Controllers
         {
             return Ok(await _productManager.AddProduct(product));
         }
-        
+
         /// <summary>
-        /// Update product
+        ///     Update product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -49,9 +53,9 @@ namespace Example.Api.Controllers
         {
             return Ok(await _productManager.UpdateProduct(product));
         }
-        
+
         /// <summary>
-        /// Delete product
+        ///     Delete product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -60,9 +64,9 @@ namespace Example.Api.Controllers
         {
             return Ok(await _productManager.DeleteProduct(product));
         }
-        
+
         /// <summary>
-        /// List of product by category
+        ///     List of product by category
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>

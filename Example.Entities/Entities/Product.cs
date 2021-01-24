@@ -1,8 +1,12 @@
-﻿using Example.Entities.Abstract;
+﻿#region
+
+using Example.Entities.Abstract;
+
+#endregion
 
 namespace Example.Entities.Entities
 {
-    public class Product: IEntity
+    public class Product : IEntity
     {
         public int Id { get; set; }
         public int CategoryId { get; set; }

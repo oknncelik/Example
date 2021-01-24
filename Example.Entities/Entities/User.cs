@@ -1,4 +1,8 @@
-﻿using Example.Entities.Abstract;
+﻿#region
+
+using Example.Entities.Abstract;
+
+#endregion
 
 namespace Example.Entities.Entities
 {

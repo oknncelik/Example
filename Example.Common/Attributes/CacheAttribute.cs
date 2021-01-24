@@ -53,7 +53,8 @@ namespace Example.Common.Attributes
         {
             var methodName = $"{invocation.Method.ReflectedType?.FullName}.{invocation.Method.Name}";
             var args = invocation.Arguments.ToList();
-            var key = $"{methodName}({string.Join(",", args.Select(arg => JsonConvert.SerializeObject(arg ?? "<NULL>")))})";
+            var key =
+                $"{methodName}({string.Join(",", args.Select(arg => JsonConvert.SerializeObject(arg ?? "<NULL>")))})";
 
             if (_operation == Cache.Remove)
             {

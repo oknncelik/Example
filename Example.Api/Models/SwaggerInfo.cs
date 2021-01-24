@@ -1,4 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
+﻿#region
+
+using Microsoft.OpenApi.Models;
+
+#endregion
 
 namespace Example.Api.Models
 {

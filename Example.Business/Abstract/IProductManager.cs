@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region
+
 using System.Threading.Tasks;
 using Example.Common.Results.Abstract;
 using Example.Entities.Dtos;
-using Example.Entities.Entities;
+
+#endregion
 
 namespace Example.Business.Abstract
 {

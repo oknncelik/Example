@@ -8,11 +8,6 @@ namespace Example.Common.Results
 {
     public class ErrorResult : IResult
     {
-        public string ResultType { get; } = "Error";
-        public int Code { get; set; }
-        public bool IsSuccess { get; } = false;
-        public string Message { get; set; }
-        
         public ErrorResult(int code, string message) : this(message)
         {
             Code = code;
@@ -22,5 +17,10 @@ namespace Example.Common.Results
         {
             Message = message;
         }
+
+        public string ResultType { get; } = "Error";
+        public int Code { get; set; }
+        public bool IsSuccess { get; } = false;
+        public string Message { get; set; }
     }
 }

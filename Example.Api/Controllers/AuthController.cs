@@ -1,8 +1,12 @@
-﻿using Example.Business.Abstract;
+﻿#region
+
+using System.Threading.Tasks;
+using Example.Business.Abstract;
 using Example.Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace Example.Api.Controllers
 {
@@ -12,6 +16,7 @@ namespace Example.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthManager _authManager;
+
         public AuthController(IAuthManager authManager)
         {
             _authManager = authManager;

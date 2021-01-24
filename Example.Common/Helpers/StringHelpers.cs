@@ -35,7 +35,7 @@
             catch
             {
                 return text;
-            } 
+            }
         }
     }
 }

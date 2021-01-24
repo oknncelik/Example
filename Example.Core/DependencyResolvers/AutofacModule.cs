@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿#region
+
+using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Castle.DynamicProxy;
 using Example.Business.Abstract;
@@ -8,6 +10,8 @@ using Example.Common.Security.Jwt;
 using Example.Common.Security.Jwt.Abstract;
 using Example.Dal.Abstract.Repositories;
 using Example.Dal.Concreate.Repositories;
+
+#endregion
 
 namespace Example.Core.DependencyResolvers
 {

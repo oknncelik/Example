@@ -1,5 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿#region
+
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Example.Common.Helpers
 {

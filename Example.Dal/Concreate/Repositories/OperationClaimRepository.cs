@@ -1,9 +1,10 @@
-﻿using Example.Dal.Abstract.Repositories;
+﻿#region
+
+using Example.Dal.Abstract.Repositories;
 using Example.Dal.Context;
 using Example.Entities.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
+#endregion
 
 namespace Example.Dal.Concreate.Repositories
 {

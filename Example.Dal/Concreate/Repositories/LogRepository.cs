@@ -8,8 +8,7 @@ using Example.Entities.Entities;
 
 namespace Example.Dal.Concreate.Repositories
 {
-    public class UserOperationClaimRepository : BaseContext<UserOperationClaim, ExampleContext>,
-        IUserOperationClaimRepository
+    public class LogRepository : BaseContext<Log, ExampleContext>, ILogRepository
     {
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿#region
+
+using System.Threading.Tasks;
 using Example.Business.Abstract;
 using Example.Common.Attributes;
 using Example.Common.Constants;
-using Example.Common.Enums;
 using Example.Common.Helpers;
 using Example.Common.Results;
 using Example.Common.Results.Abstract;
@@ -11,6 +12,8 @@ using Example.Common.Security.Jwt.Models;
 using Example.Dal.Abstract.Repositories;
 using Example.Entities.Dtos;
 using Example.Entities.Entities;
+
+#endregion
 
 namespace Example.Business.Concreate
 {
@@ -26,7 +29,7 @@ namespace Example.Business.Concreate
             _userRepository = userRepository;
             _tokenHelper = tokenHelper;
         }
-        
+
         public async Task<IResult> Register(RegisterModel register)
         {
             HashHelpers.CreatePasswordHash(register.Password, out var passwordHash, out var passwordSalt);
@@ -52,7 +55,7 @@ namespace Example.Business.Concreate
             return new SuccessResult<UserInfoModel>(result, Messages.UserRegistered);
         }
 
-        
+
         public async Task<IResult> Login(LoginModel login)
         {
             var user = await _userRepository.Get(x => x.UserName == login.UserName || x.EMail == login.UserName);
@@ -77,17 +80,15 @@ namespace Example.Business.Concreate
         {
             if (userModel.GetType() == typeof(SuccessResult<UserInfoModel>))
             {
-                var model = (userModel as SuccessResult<UserInfoModel>);
+                var model = userModel as SuccessResult<UserInfoModel>;
                 var user = await _userRepository.Get(x => x.Id == model.Result.Id);
                 if (user == null) return new ErrorResult(Messages.AccessTokenNotCreated);
                 var claims = await _userRepository.GetClaims(user);
                 var accessToken = _tokenHelper.CreateToken(user, claims);
-                return new SuccessResult<AccessToken>(accessToken, Messages.AccessTokenCreated);               
+                return new SuccessResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
             }
-            else
-            {
-                return new ErrorResult(Messages.AccessTokenNotCreated);
-            }
+
+            return new ErrorResult(Messages.AccessTokenNotCreated);
         }
     }
 }
