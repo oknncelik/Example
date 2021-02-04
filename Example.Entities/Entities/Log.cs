@@ -10,8 +10,9 @@ namespace Example.Entities.Entities
     public class Log : IEntity
     {
         public int Id { get; set; }
+        public string User { get; set; }
         public DateTime LogDate { get; set; }
-        public int? TransectionId { get; set; }
+        public int? TransactionId { get; set; }
         public string Status { get; set; }
         public int? ResultCode { get; set; }
         public string MethodName { get; set; }
