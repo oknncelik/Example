@@ -37,6 +37,11 @@ namespace Example.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:3000"));
+            });
 
             _swaggerInfo = Configuration.GetSection(nameof(SwaggerInfo)).Get<SwaggerInfo>();
             var tokenOptions = Configuration.GetSection(nameof(TokenOptions)).Get<TokenOptions>();
@@ -114,7 +119,7 @@ namespace Example.Api
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
