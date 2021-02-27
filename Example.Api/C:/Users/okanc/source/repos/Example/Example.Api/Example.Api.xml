@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Example.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Example.Api.Controllers.CategoryController.GetCategories">
+            <summary>
+                List of Category
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.CategoryController.AddCategory(System.String)">
+            <summary>
+                Add Category
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.ProductController.GetProducts">
+            <summary>
+                List of product
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.ProductController.AddProduct(Example.Entities.Dtos.ProductModel)">
+            <summary>
+                Add product
+            </summary>
+            <param name="product"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.ProductController.UpdateProduct(Example.Entities.Dtos.ProductModel)">
+            <summary>
+                Update product
+            </summary>
+            <param name="product"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.ProductController.DeleteProduct(Example.Entities.Dtos.ProductModel)">
+            <summary>
+                Delete product
+            </summary>
+            <param name="product"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.ProductController.GetProductsByCategory(System.Int32)">
+            <summary>
+                List of product by category
+            </summary>
+            <param name="categoryId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -16,10 +16,16 @@ namespace Example.Dal.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Log> Logs { get; set; }
 
+        public ExampleContext()
+        {
+            //Hi !! I'm codefirsts
+            Database.EnsureCreated();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=OKANPC\OKANSRV; database=ExampleDB; User ID=sa; password=1234; Trusted_Connection=true");
+                @"Server=localhost,1433; database=ExampleDB; User ID=sa; password=19Mayis1919!;");
         }
     }
 }
