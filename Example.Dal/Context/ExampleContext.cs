@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Example.Dal.Context
 {
-    public class ExampleContext : DbContext
+    public sealed class ExampleContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
@@ -18,7 +18,7 @@ namespace Example.Dal.Context
 
         public ExampleContext()
         {
-            //Hi !! I'm codefirsts
+            //Hi !! I'm code firsts
             Database.EnsureCreated();
         }
 
