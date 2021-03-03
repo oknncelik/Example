@@ -19,36 +19,42 @@
         </member>
         <member name="M:Example.Api.Controllers.ProductController.GetProducts">
             <summary>
-                List of product
+            List of product
             </summary>
             <returns></returns>
         </member>
         <member name="M:Example.Api.Controllers.ProductController.AddProduct(Example.Entities.Dtos.ProductModel)">
             <summary>
-                Add product
+             Add product
             </summary>
             <param name="product"></param>
             <returns></returns>
         </member>
         <member name="M:Example.Api.Controllers.ProductController.UpdateProduct(Example.Entities.Dtos.ProductModel)">
             <summary>
-                Update product
+            Update product
             </summary>
             <param name="product"></param>
             <returns></returns>
         </member>
         <member name="M:Example.Api.Controllers.ProductController.DeleteProduct(Example.Entities.Dtos.ProductModel)">
             <summary>
-                Delete product
+            Delete product
             </summary>
             <param name="product"></param>
             <returns></returns>
         </member>
         <member name="M:Example.Api.Controllers.ProductController.GetProductsByCategory(System.Int32)">
             <summary>
-                List of product by category
+            List of product by category
             </summary>
             <param name="categoryId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Example.Api.Controllers.ProductController.GetTest">
+            <summary>
+            Test
+            </summary>
             <returns></returns>
         </member>
     </members>

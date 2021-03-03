@@ -23,7 +23,7 @@ namespace Example.Api.Controllers
         }
 
         /// <summary>
-        ///     List of product
+        /// List of product
         /// </summary>
         /// <returns></returns>
         [HttpGet("products")]
@@ -33,7 +33,7 @@ namespace Example.Api.Controllers
         }
 
         /// <summary>
-        ///     Add product
+        ///  Add product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -44,7 +44,7 @@ namespace Example.Api.Controllers
         }
 
         /// <summary>
-        ///     Update product
+        /// Update product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -55,7 +55,7 @@ namespace Example.Api.Controllers
         }
 
         /// <summary>
-        ///     Delete product
+        /// Delete product
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
@@ -66,7 +66,7 @@ namespace Example.Api.Controllers
         }
 
         /// <summary>
-        ///     List of product by category
+        /// List of product by category
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>
@@ -75,5 +75,16 @@ namespace Example.Api.Controllers
         {
             return Ok(await _productManager.GetProductByCategory(categoryId));
         }
+        
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetTest")]
+        public async Task<IActionResult> GetTest()
+        {
+            return Ok("Ok.");
+        }        
+        
     }
 }
