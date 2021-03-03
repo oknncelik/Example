@@ -94,7 +94,7 @@ namespace Example.Api.Controllers
         [HttpGet("GetTest")]
         public async Task<IActionResult> GetTest2()
         {
-            //NewFuture
+            //NewFuture  test
             return Ok("Ok.");
         }
         
