@@ -85,7 +85,18 @@ namespace Example.Api.Controllers
         {
             //tst_2 edit.
             return Ok("Ok.");
-        }        
+        }   
+        
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetTest")]
+        public async Task<IActionResult> GetTest2()
+        {
+            //NewFuture
+            return Ok("Ok.");
+        }
         
     }
 }
