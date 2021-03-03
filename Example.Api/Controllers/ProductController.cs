@@ -83,6 +83,7 @@ namespace Example.Api.Controllers
         [HttpGet("GetTest")]
         public async Task<IActionResult> GetTest()
         {
+            //tst_2 edit.
             return Ok("Ok.");
         }        
         
