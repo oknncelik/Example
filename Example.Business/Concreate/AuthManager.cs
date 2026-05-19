@@ -1,6 +1,7 @@
-﻿#region
+#region
 
 using System.Threading.Tasks;
+using AutoMapper;
 using Example.Business.Abstract;
 using Example.Common.Attributes;
 using Example.Common.Constants;
@@ -22,36 +23,26 @@ namespace Example.Business.Concreate
     {
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         public AuthManager(IUserRepository userRepository,
-            ITokenHelper tokenHelper)
+            ITokenHelper tokenHelper, IMapper mapper)
         {
             _userRepository = userRepository;
             _tokenHelper = tokenHelper;
+            _mapper = mapper;
         }
 
         public async Task<IResult> Register(RegisterModel register)
         {
             HashHelpers.CreatePasswordHash(register.Password, out var passwordHash, out var passwordSalt);
-            var user = new User
-            {
-                UserName = register.UserName,
-                EMail = register.EMail,
-                FirstName = register.FirstName,
-                LastName = register.LastName,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                ActiveFlg = true
-            };
+            var user = _mapper.Map<User>(register);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.ActiveFlg = true;
+            
             user = await _userRepository.Add(user);
-            var result = new UserInfoModel
-            {
-                Id = user.Id,
-                EMail = user.EMail,
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
+            var result = _mapper.Map<UserInfoModel>(user);
             return new SuccessResult<UserInfoModel>(result, Messages.UserRegistered);
         }
 
@@ -65,14 +56,7 @@ namespace Example.Business.Concreate
             if (!HashHelpers.VerifyPasswordHash(login.Password, user.PasswordHash, user.PasswordSalt))
                 return new ErrorResult(Messages.PasswordError);
 
-            var result = new UserInfoModel
-            {
-                Id = user.Id,
-                EMail = user.EMail,
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
+            var result = _mapper.Map<UserInfoModel>(user);
             return new SuccessResult<UserInfoModel>(result, Messages.SuccessfulLogin);
         }
 

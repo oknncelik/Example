@@ -18,6 +18,7 @@ using Example.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
+using IResult = Example.Common.Results.Abstract.IResult;
 
 namespace Example.Common.Logs.Concreate
 {

@@ -12,6 +12,7 @@ using Example.Common.Results;
 using Example.Common.Results.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using IResult = Example.Common.Results.Abstract.IResult;
 
 #endregion
 

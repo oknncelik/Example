@@ -1,8 +1,9 @@
-﻿#region
+#region
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Example.Business.Abstract;
 using Example.Common.Attributes;
 using Example.Common.Enums;
@@ -20,10 +21,12 @@ namespace Example.Business.Concreate
     public class CategoryManager : ICategoryManager
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public CategoryManager(ICategoryRepository categoryRepository)
+        public CategoryManager(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         [Auth("Category.List")]
@@ -31,23 +34,17 @@ namespace Example.Business.Concreate
         public async Task<IResult> GetCategories()
         {
             var categories = await _categoryRepository.GetList();
-            var result = categories.Select(x => new CategoryModel
-            {
-                Id = x.Id,
-                Name = x.Name
-            }).ToList();
+            var result = _mapper.Map<List<CategoryModel>>(categories);
             return new SuccessResult<List<CategoryModel>>(result);
         }
 
         [Cache(Cache.Remove, "ICategoryManager.Get")]
         public async Task<IResult> AddCategory(string name)
         {
-            var result = await _categoryRepository.Add(new Category {Name = name});
-            return new SuccessResult<CategoryModel>(new CategoryModel
-            {
-                Id = result.Id,
-                Name = result.Name
-            });
+            var category = new Category {Name = name};
+            var result = await _categoryRepository.Add(category);
+            var data = _mapper.Map<CategoryModel>(result);
+            return new SuccessResult<CategoryModel>(data);
         }
     }
 }
