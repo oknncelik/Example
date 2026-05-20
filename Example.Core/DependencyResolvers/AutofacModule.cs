@@ -45,6 +45,8 @@ namespace Example.Core.DependencyResolvers
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
             builder.RegisterType<ProductManager>().As<IProductManager>()
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimManager>()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions {Selector = new AspectInterceptorSelector()});
 
             #endregion
 

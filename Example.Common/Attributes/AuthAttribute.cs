@@ -21,31 +21,35 @@ namespace Example.Common.Attributes
     public class AuthAttribute : MethodInterception
     {
         private readonly IHttpContextAccessor _accessor;
-        private readonly string[] _roles;
+        public string[] Roles { get; }
 
         public AuthAttribute(string roles)
         {
-            _roles = roles.Split(',');
+            Roles = roles.Split(',');
             _accessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         public override void Intercept(IInvocation invocation)
         {
-            var start = DateTime.Now;
             var claims = _accessor.HttpContext.User.ClaimRole();
-            if (claims.Any(claim => _roles.Contains(claim)))
+            if (claims.Any(claim => Roles.Contains(claim)))
             {
                 invocation.Proceed();
                 return;
             }
 
-            var end = DateTime.Now;
-            invocation.ReturnValue = AuthorizationDeniedResult();
-        }
-
-        private static async Task<IResult> AuthorizationDeniedResult()
-        {
-            return await Task.Run(() => new WarningResult(403, Messages.AuthorizationDenied));
+            var result = new WarningResult(403, Messages.AuthorizationDenied);
+            
+            // Metot asenkron ise (Task veya Task<T> dönüyorsa) dönüş değerini Task.FromResult ile sarmalamalıyız.
+            if (typeof(Task).IsAssignableFrom(invocation.Method.ReturnType))
+            {
+                // Task<IResult> tipine uygun bir Task oluşturuyoruz.
+                invocation.ReturnValue = Task.FromResult<IResult>(result);
+            }
+            else
+            {
+                invocation.ReturnValue = result;
+            }
         }
     }
 }

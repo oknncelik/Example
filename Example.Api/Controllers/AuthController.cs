@@ -1,45 +1,54 @@
-﻿#region
-
 using System.Threading.Tasks;
 using Example.Business.Abstract;
 using Example.Entities.Dtos;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-#endregion
+namespace Example.Api.Controllers;
 
-namespace Example.Api.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController : ControllerBase
 {
-    [AllowAnonymous]
-    [Route("api/auth")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    private readonly IAuthManager _authManager;
+
+    public AuthController(IAuthManager authManager)
     {
-        private readonly IAuthManager _authManager;
+        _authManager = authManager;
+    }
 
-        public AuthController(IAuthManager authManager)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginModel loginModel)
+    {
+        var userToLogin = await _authManager.Login(loginModel);
+        if (!userToLogin.IsSuccess)
         {
-            _authManager = authManager;
+            return BadRequest(userToLogin);
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginModel login)
+        var result = await _authManager.CreateAccessToken(userToLogin);
+        if (result.IsSuccess)
         {
-            var user = await _authManager.Login(login);
-            if (!user.IsSuccess)
-                return BadRequest(user.Message);
-
-            var result = await _authManager.CreateAccessToken(user);
-            if (result.IsSuccess)
-                return Ok(result);
-
-            return BadRequest(result);
+            return Ok(result);
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterModel register)
+        return BadRequest(result);
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterModel registerModel)
+    {
+        var registerResult = await _authManager.Register(registerModel);
+        if (!registerResult.IsSuccess)
         {
-            return Ok(await _authManager.Register(register));
+            return BadRequest(registerResult);
         }
+
+        var result = await _authManager.CreateAccessToken(registerResult);
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+
+        return BadRequest(result);
     }
 }

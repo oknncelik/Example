@@ -12,6 +12,7 @@ namespace Example.Business.Mappings.AutoMapper
             CreateMap<Category, CategoryModel>().ReverseMap();
             CreateMap<User, UserInfoModel>().ReverseMap();
             CreateMap<RegisterModel, User>();
+            CreateMap<UserOperationClaim, UserOperationClaimModel>().ReverseMap();
         }
     }
 }

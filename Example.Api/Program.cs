@@ -37,10 +37,16 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddDbContext<Example.Dal.Context.ExampleContext>();
+builder.Services.AddHostedService<Example.Api.Services.ClaimSeedService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
-        policyBuilder => policyBuilder.WithOrigins("http://localhost:3000").AllowAnyHeader());
+        policyBuilder => policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 var swaggerInfo = builder.Configuration.GetSection(nameof(SwaggerInfo)).Get<SwaggerInfo>();
@@ -124,7 +130,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseCors(policyBuilder => policyBuilder.WithOrigins("http://localhost:3000").AllowAnyHeader());
+app.UseCors("AllowOrigin");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

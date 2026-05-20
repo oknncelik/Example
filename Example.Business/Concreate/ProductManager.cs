@@ -27,6 +27,7 @@ public class ProductManager : IProductManager
         _mapper = mapper;
     }
 
+    [Auth("Product.List")]
     [Cache(Cache.AddOrGet, 1)]
     public async Task<IResult> GetProducts()
     {
@@ -35,6 +36,7 @@ public class ProductManager : IProductManager
         return new SuccessResult<List<ProductModel>>(data);
     }
 
+    [Auth("Product.List")]
     [Cache(Cache.AddOrGet, 1)]
     public async Task<IResult> GetProductById(int id)
     {
@@ -43,6 +45,7 @@ public class ProductManager : IProductManager
         return new SuccessResult<ProductModel>(data);
     }
 
+    [Auth("Product.Add")]
     [Cache(Cache.Remove, "IProductManager.Get")]
     public async Task<IResult> AddProduct(ProductModel product)
     {
@@ -52,6 +55,7 @@ public class ProductManager : IProductManager
         return new SuccessResult<ProductModel>(data);
     }
 
+    [Auth("Product.Update")]
     [Cache(Cache.Remove, "IProductManager.Get")]
     public async Task<IResult> UpdateProduct(ProductModel product)
     {
@@ -61,6 +65,7 @@ public class ProductManager : IProductManager
         return new SuccessResult<ProductModel>(data);
     }
 
+    [Auth("Product.Delete")]
     [Cache(Cache.Remove, "IProductManager.Get")]
     public async Task<IResult> DeleteProduct(ProductModel product)
     {
@@ -69,6 +74,7 @@ public class ProductManager : IProductManager
         return new SuccessResult<bool>(result);
     }
 
+    [Auth("Product.List")]
     [Cache(Cache.AddOrGet, 1)]
     public async Task<IResult> GetProductByCategory(int categoryId)
     {

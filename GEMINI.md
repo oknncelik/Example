@@ -1,45 +1,64 @@
-# Project Instructions - Example
+# Proje Talimatları - Example
 
-This document provides foundational guidance for the **Example** project. Adhere to these standards to maintain consistency and architectural integrity.
+Bu belge, **Example** projesi için temel rehber ve standartları içerir. Projenin tutarlılığını ve mimari bütünlüğünü korumak için bu standartlara uyunuz.
 
-## Project Overview
-A multi-layered ASP.NET Core Web API project using Autofac for Dependency Injection and Castle DynamicProxy for Aspect-Oriented Programming (AOP).
+## Proje Özeti
+Bu proje, Bağımlılık Enjeksiyonu (DI) için **Autofac** ve Enine Kesen İlgiler (AOP) için **Castle DynamicProxy** kullanan çok katmanlı (N-Tier) bir ASP.NET Core Web API projesidir.
 
-## Architecture & Layers
-The project follows an N-Tier Architecture:
+## Mimari ve Katmanlar
+Proje şu katmanlardan oluşur:
 
-- **Example.Api:** The entry point. Modern unified `Program.cs` structure.
-- **Example.Business:** Business logic layer.
-- **Example.Dal:** Data Access Layer.
-- **Example.Entities:** Domain entities and Data Transfer Objects (DTOs).
-- **Example.Common:** Shared cross-cutting concerns.
-- **Example.Core:** Dependency Injection configuration (Autofac).
+- **Example.Api:** Giriş noktası. Modern birleşik `Program.cs` yapısı kullanılır.
+- **Example.Business:** İş mantığı (Business Logic) katmanı.
+- **Example.Dal:** Veri Erişim Katmanı (Data Access Layer).
+- **Example.Entities:** Domain varlıkları (Entities) ve Veri Transfer Nesneleri (DTOs).
+- **Example.Common:** Paylaşılan çapraz kesen ilgiler (Cross-cutting concerns), yardımcı sınıflar ve sonuç modelleri.
+- **Example.Core:** Bağımlılık Enjeksiyonu yapılandırması (Autofac).
 
-## Technology Stack
+## Teknoloji Yığını
 - **Framework:** .NET 10.0
-- **DI Container:** Autofac
+- **DI Konteynırı:** Autofac & Autofac.Extensions.DependencyInjection
 - **AOP:** Castle DynamicProxy
 - **ORM:** Entity Framework Core 10.0
-- **Auth:** JWT (JSON Web Tokens)
-- **Documentation:** Swagger/OpenAPI (Swashbuckle)
+- **Veritabanı:** Microsoft SQL Server
+- **Kimlik Doğrulama:** JWT (JSON Web Tokens)
+- **Dokümantasyon:** Swagger/OpenAPI (Swashbuckle)
+- **Konteynırlaştırma:** Docker & Docker Compose
 
-## Coding Conventions
+## Gelişmiş Özellikler
 
-### Language Features
-- **C# 14:** Utilize modern C# features such as File-scoped namespaces, Global Usings, and Primary Constructors where appropriate.
-- **Minimal API / Unified Program.cs:** The Api layer uses the unified `Program.cs` pattern.
+### 1. Otomatik Yetki Kayıt Sistemi (`ClaimSeedService`)
+Proje, metotlar üzerindeki `[Auth("...")]` niteliklerini (attribute) tarayan ve veritabanındaki `OperationClaims` tablosuna otomatik olarak kaydeden bir mekanizmaya sahiptir. Yeni bir yetki eklemek için sadece ilgili metoda niteliği eklemeniz yeterlidir.
 
-### Result Pattern
-All Business layer methods MUST return an `IResult` or `IDataResult<T>`.
+### 2. Dinamik Yetkilendirme (`AuthAttribute`)
+AOP kullanılarak metot düzeyinde yetki kontrolü yapılır. Yetkisiz erişimlerde sistem otomatik olarak `403 Forbidden` yanıtı döner ve asenkron metotları güvenli bir şekilde yönetir.
 
-### Aspect-Oriented Programming (AOP)
-Cross-cutting concerns are handled via attributes on Manager methods.
+### 3. Performans Optimizasyonları
+- **AsNoTracking:** Okuma işlemlerinde EF Core takip mekanizması kapatılarak bellek kullanımı optimize edilmiştir.
+- **Caching:** `MemoryCacheManager` üzerinden desen tabanlı (pattern-based) önbellek yönetimi sağlanmıştır.
+- **DbContext Yönetimi:** Veritabanı bağlantıları bağlantı havuzu verimliliği için optimize edilmiştir.
 
-### Mapping
-Automated mapping is handled via **AutoMapper**.
+## Kurulum ve Çalıştırma
 
-### Async/Await
-Use asynchronous programming throughout the layers.
+### Docker ile Başlatma
+Proje Docker ile tam uyumludur. Tüm servisleri (API + SQL Server) tek komutla başlatabilirsiniz:
 
-## Development Workflow
-(Steps remain the same, ensuring net10.0 compatibility)
+```bash
+docker-compose up --build
+```
+
+- **API:** http://localhost:5000 (Otomatik Swagger açılır)
+- **SQL Server Port:** 1433
+- **JWT Anahtarı:** Güvenlik standartları gereği 256-bit+ anahtar kullanılmaktadır.
+
+### Veritabanı Yapılandırması
+Uygulama ilk kez ayağa kalkarken:
+1. Veritabanının varlığını kontrol eder, yoksa oluşturur.
+2. `Auth` niteliklerini tarayarak yetkileri tablolarına işler.
+3. Docker ortam değişkenlerinden (`ConnectionStrings__DefaultConnection`) bağlantı bilgilerini otomatik alır.
+
+## Kodlama Standartları
+- **İsimlendirme:** Sınıf ve metot isimlendirmelerinde PascalCase kullanılır.
+- **Async/Await:** Tüm katmanlarda asenkron programlama zorunludur.
+- **Sonuç Deseni (Result Pattern):** Business metodları her zaman `IResult` veya `IDataResult<T>` dönmelidir.
+- **Mapping:** Nesne dönüşümleri için **AutoMapper** kullanılmalıdır.

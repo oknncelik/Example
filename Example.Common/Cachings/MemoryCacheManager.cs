@@ -15,6 +15,8 @@ namespace Example.Common.Cachings
 {
     public class MemoryCacheManager : ICacheManager
     {
+        private readonly List<string> _keys = new();
+
         public MemoryCacheManager()
         {
             Cache = ServiceTool.ServiceProvider.GetService<IMemoryCache>();
@@ -34,6 +36,7 @@ namespace Example.Common.Cachings
 
         public void Add(string key, object data, int duration)
         {
+            if (!_keys.Contains(key)) _keys.Add(key);
             Cache.Set(key, data, TimeSpan.FromMinutes(duration));
         }
 
@@ -44,23 +47,17 @@ namespace Example.Common.Cachings
 
         public void Remove(string key)
         {
+            _keys.Remove(key);
             Cache.Remove(key);
         }
 
         public void RemoveByPattern(string pattern)
         {
-            var definition = typeof(MemoryCache).GetProperty("EntriesCollection",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            if (definition is null) return;
-            var items = definition.GetValue(Cache) as dynamic;
-            var values = new List<ICacheEntry>();
-
-            foreach (var cacheItem in items)
-                values.Add(cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null));
-
-            var patternKeys = values.Where(x => x.Key.ToString().Contains(pattern)).Select(x => x.Key.ToString());
-            foreach (var key in patternKeys)
+            var keysToRemove = _keys.Where(k => k.Contains(pattern)).ToList();
+            foreach (var key in keysToRemove)
+            {
                 Remove(key);
+            }
         }
     }
 }
