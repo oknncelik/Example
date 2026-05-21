@@ -19,5 +19,11 @@ namespace Example.Common.Extensions
         {
             return claimsPrincipal?.Claims(ClaimTypes.Role);
         }
+
+        public static int GetUserId(this ClaimsPrincipal claimsPrincipal)
+        {
+            var userId = claimsPrincipal?.Claims(ClaimTypes.NameIdentifier)?.FirstOrDefault();
+            return userId != null ? int.Parse(userId) : 0;
+        }
     }
 }

@@ -26,11 +26,11 @@ namespace Example.Common.Security.Jwt
             _expirationDate = DateTime.UtcNow.AddMinutes(_tokenOptions.Expiration);
         }
 
-        public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)
+        public AccessToken CreateToken(User user)
         {
             var securityKey = _tokenOptions.Key.CreateSecurityKey();
             var signingCredentials = securityKey.CreateSigningCredentials();
-            var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials, operationClaims);
+            var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
 
@@ -42,26 +42,26 @@ namespace Example.Common.Security.Jwt
         }
 
         public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,
-            SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
+            SigningCredentials signingCredentials)
         {
             var jwt = new JwtSecurityToken(
                 tokenOptions.Issuer,
                 tokenOptions.Audience,
                 expires: _expirationDate,
                 notBefore: DateTime.UtcNow,
-                claims: SetClaims(user, operationClaims),
+                claims: SetClaims(user),
                 signingCredentials: signingCredentials
             );
             return jwt;
         }
 
-        private IEnumerable<Claim> SetClaims(User user, List<OperationClaim> operationClaims)
+        private IEnumerable<Claim> SetClaims(User user)
         {
             var claims = new List<Claim>();
             claims.AddNameIdentifier(user.Id.ToString());
             claims.AddEmail(user.EMail);
             claims.AddName($"{user.FirstName} {user.LastName}");
-            claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
+            // roles are no longer added to token, they will be checked from DB on each request
             return claims;
         }
     }

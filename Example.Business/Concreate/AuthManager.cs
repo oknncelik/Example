@@ -67,8 +67,7 @@ namespace Example.Business.Concreate
                 var model = userModel as SuccessResult<UserInfoModel>;
                 var user = await _userRepository.Get(x => x.Id == model.Result.Id);
                 if (user == null) return new ErrorResult(Messages.AccessTokenNotCreated);
-                var claims = await _userRepository.GetClaims(user);
-                var accessToken = _tokenHelper.CreateToken(user, claims);
+                var accessToken = _tokenHelper.CreateToken(user);
                 return new SuccessResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
             }
 

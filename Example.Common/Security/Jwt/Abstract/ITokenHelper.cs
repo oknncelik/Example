@@ -10,6 +10,6 @@ namespace Example.Common.Security.Jwt.Abstract
 {
     public interface ITokenHelper
     {
-        AccessToken CreateToken(User user, List<OperationClaim> operationClaims);
+        AccessToken CreateToken(User user);
     }
 }

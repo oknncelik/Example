@@ -21,6 +21,7 @@ namespace Example.Common.DependencyResolvers
             services.AddMemoryCache();
             services.AddSingleton<ICacheManager, MemoryCacheManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<ILogRepository, LogRepository>();
             services.AddSingleton<ILogManager, LogManager>();
         }

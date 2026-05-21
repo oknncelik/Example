@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
 using Example.Business.Abstract;
 using Example.Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Example.Api.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserOperationClaimsController : ControllerBase
